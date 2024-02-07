@@ -10,7 +10,7 @@ import java.security.MessageDigest
 fun main() {
     val input = "yzbqklnj"
     val result = generateSequence(1) { it + 1 }
-        .first { (input + it).md5().startsWith("00000") }
+        .first { (input + it).md5().startsWith("000000") }
 
     println(result)
 }
