@@ -9,10 +9,10 @@ import java.io.File
  */
 fun main(args: Array<String>) {
     val count = File("src/y2015/day2/day2.txt").readLines()
-        .map {
-            str ->
-            val (l,w,h) = str.split("x").map(String::toInt)
-            (2*l*w + 2*w*h + 2*h*l + minOf(l*w, w*h, h*l))
-        }.sum()
+        .sumOf {
+            val (l, w, h) = it.split("x").map(String::toInt)
+            val sideAreas = listOf(l*w, w*h, h*l)
+            2 * sideAreas.sum() + sideAreas.min()
+        }
     println(count)
 }
