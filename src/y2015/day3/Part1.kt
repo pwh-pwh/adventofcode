@@ -8,30 +8,21 @@ import java.io.File
  * @Description:
  */
 fun main() {
-    var location = 0 to 0
-    val visited = mutableSetOf<Pair<Int,Int>>()
-    visited.add(location)
-    File("src/y2015/day3/day3.txt").readText()
-        .forEach {
-            c ->
-            when (c) {
-                '^' -> {
-                    location = location.copy(second = location.second + 1)
-                    visited.add(location)
-                }
-                'v' -> {
-                    location = location.copy(second = location.second - 1)
-                    visited.add(location)
-                }
-                '<' -> {
-                    location = location.copy(first = location.first - 1)
-                    visited.add(location)
-                }
-                '>' -> {
-                    location = location.copy(first = location.first + 1)
-                    visited.add(location)
-                }
-            }
+    val visited = mutableSetOf<Pair<Int, Int>>().apply { add(0 to 0) }
+    val directions = File("src/y2015/day3/day3.txt").readText().map {
+        when (it) {
+            '^' -> 0 to 1
+            'v' -> 0 to -1
+            '<' -> -1 to 0
+            '>' -> 1 to 0
+            else -> null
         }
+    }.filterNotNull()
+
+    val location = directions.fold(0 to 0) { loc, move ->
+        ((loc.first + move.first) to (loc.second + move.second))
+            .also { visited.add(it) }
+    }
+
     println(visited.size)
 }
