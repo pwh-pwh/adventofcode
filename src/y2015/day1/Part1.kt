@@ -1,4 +1,10 @@
-package y2015
+package y2015.day1
+
+/**
+ * @Auther: coderpwh
+ * @Date: 2024/2/7 10:17
+ * @Description:
+ */
 
 import java.io.File
 
@@ -8,7 +14,7 @@ import java.io.File
  * @Description:
  */
 fun main(args: Array<String>) {
-    val floor = File("src/y2015/day1.txt").readText()
+    val floor = File("src/y2015/day1/day1.txt").readText()
         .sumOf {
             when (it) {
                 '(' -> 1
