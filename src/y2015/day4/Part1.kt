@@ -9,19 +9,12 @@ import java.security.MessageDigest
  */
 fun main() {
     val input = "yzbqklnj"
-    var num = 1
-    while (true) {
-        if (input.plus(num++).md5().startWithFiveZeroes()) {
-            println(num - 1)
-            break
-        }
-    }
+    val result = generateSequence(1) { it + 1 }
+        .first { (input + it).md5().startsWith("00000") }
+
+    println(result)
 }
 
-fun String.md5():String {
-    val md = MessageDigest.getInstance("MD5")
-    val digest = md.digest(this.toByteArray())
-    return digest.fold("") { str, it -> str + "%02x".format(it) }
-}
-
-fun String.startWithFiveZeroes() = this.startsWith("00000")
+fun String.md5(): String = MessageDigest.getInstance("MD5")
+    .digest(this.toByteArray())
+    .joinToString("") { "%02x".format(it) }
