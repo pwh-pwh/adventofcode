@@ -5,7 +5,6 @@ import java.io.File
 fun main() {
     val map = mutableMapOf<String, Int>()
     val data = File("src/y2015/day7/day7.txt").readLines().toMutableList()
-
     while (data.isNotEmpty()) {
         data.iterator().let { iterator ->
             while (iterator.hasNext()) {
@@ -31,9 +30,6 @@ fun main() {
     map.forEach { println(it) }
 }
 
-enum class Action {
-    AND, OR, LSHIFT, RSHIFT, NOT, SET
-}
 
 private fun doAction(action: Action, cmd: String, map: MutableMap<String, Int>) {
     val (input, output) = cmd.split(" -> ")
@@ -43,7 +39,12 @@ private fun doAction(action: Action, cmd: String, map: MutableMap<String, Int>) 
         Action.LSHIFT -> input.split(" LSHIFT ").run { this[0].getValue(map) shl this[1].toInt() }
         Action.RSHIFT -> input.split(" RSHIFT ").run { this[0].getValue(map) shr this[1].toInt() }
         Action.NOT -> input.split("NOT ")[1].getValue(map).inv()
-        Action.SET -> input.getValue(map)
+        Action.SET -> {
+            if (output == "b") {
+                956
+            } else
+                input.getValue(map)
+        }
     }
     map[output] = value
 }

@@ -30,6 +30,11 @@ fun parseExpression(ex: String): Int {
 
 fun evaluate(line: String) {
     val (ex, n) = line.split(" -> ")
+    if (n == "b") {
+        wires[n] = 956
+        return
+
+    }
     wires[n] = parseExpression(ex)
 }
 
