@@ -8,21 +8,13 @@ import java.io.File
  * @Description:
  */
 fun main(args: Array<String>) {
-    var floor = 0;
-    var count = 0;
-    File("src/y2015/day1.txt").readText()
-        .toCharArray().forEach {
-            c ->
-            count++;
-            when (c) {
-                '(' -> {
-                    floor++;
-                }
-                ')' -> {
-                    floor--;
-                }
-            }
+    val floor = File("src/y2015/day1.txt").readText()
+        .sumOf {
+            when (it) {
+                '(' -> 1
+                ')' -> -1
+                else -> 0
+            } as Int
         }
     println(floor)
-    println(count)
 }
