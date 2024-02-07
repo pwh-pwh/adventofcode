@@ -8,25 +8,14 @@ import java.io.File
  * @Description:
  */
 fun main() {
-    var count = 0
-    File("src/y2015/day5/day5.txt").forEachLine {
-        if (it.isNice()) {
-            count++
-        }
-    }
+    val count = File("src/y2015/day5/day5.txt").readLines().count { it.isNice() }
     println(count)
 }
 
 private fun String.isNice(): Boolean {
-    return this.filter {
-        it == 'a' || it == 'e' || it == 'i' || it == 'o' || it == 'u'
-    }.count() > 2 && !this.checkContains() && this.charTwice()
-}
+    val hasThreeVowels = count { it in "aeiou" } >= 3
+    val hasDoubleLetter = zipWithNext().any { (a, b) -> a == b }
+    val hasNoBadSubstrings = listOf("ab", "cd", "pq", "xy").none { this.contains(it) }
 
-private fun String.checkContains(): Boolean {
-    return this.contains("ab") || this.contains("cd") || this.contains("pq") || this.contains("xy")
-}
-
-private fun String.charTwice(): Boolean {
-    return this.windowed(2).any { it[0] == it[1] }
+    return hasThreeVowels && hasDoubleLetter && hasNoBadSubstrings
 }
