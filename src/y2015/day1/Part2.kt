@@ -8,21 +8,11 @@ import java.io.File
  * @Description:
  */
 fun main() {
-    var flag = false
-    var position = 0;
     var count = 0;
-        File("src/y2015/day1/day1.txt").readText()
-            .forEachIndexed { index, c ->
-                if (c == '(') {
-                    count++
-                } else if (c == ')') {
-                    count--
-                }
-                if (count == -1 && !flag) {
-                    position = index + 1
-                    flag = true
-                }
-            }
-
+    var position = File("src/y2015/day1/day1.txt").readText()
+        .indexOfFirst {
+            count += if (it == '(') 1 else -1
+            count == -1
+        } + 1
     println(position)
 }
