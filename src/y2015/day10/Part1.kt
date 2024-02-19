@@ -14,24 +14,20 @@ fun main() {
 }
 
 fun doLookSay(input: String): String {
-    var preChar = input[0]
+    val sb = StringBuilder()
     var count = 1
-    var sb = StringBuilder()
+
     for (i in 1 until input.length) {
-        if (input[i] == preChar) {
-            count+=1
-            preChar = input[i]
-            if (i == input.length - 1) {
-                sb.append(count).append(preChar)
-            }
+        if (input[i] == input[i - 1]) {
+            count++
         } else {
-            sb.append(count).append(preChar)
+            sb.append(count).append(input[i - 1])
             count = 1
-            preChar = input[i]
-            if (i == input.length - 1) {
-                sb.append(count).append(input[i])
-            }
         }
     }
+
+    // Append the last sequence
+    sb.append(count).append(input.last())
+
     return sb.toString()
 }
