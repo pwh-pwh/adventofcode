@@ -15,37 +15,33 @@ fun main() {
 }
 
 private fun String.strIncrement(): String {
-    var carry = 1
-    val sb = StringBuilder()
-    this.toList().reversed().forEach {
-        var n = it.code + carry
-        if (n.toChar() > 'z') {
-            n = 'a'.code
-            carry = 1
+    val charArray = this.toCharArray()
+    for (i in charArray.indices.reversed()) {
+        if (charArray[i] == 'z') {
+            charArray[i] = 'a'
         } else {
-            carry = 0
+            charArray[i]++
+            break
         }
-        sb.append(n.toChar())
     }
-    return sb.reversed().toString()
+    return String(charArray)
 }
 
-private fun String.isValid(): Boolean = this.threeIncreaseLetter() && this.twoConsecutiveLetter() && this.noIOL()
+private fun String.isValid(): Boolean =
+    this.hasThreeIncreasingLetters() && this.hasTwoNonOverlappingPairs() && this.doesNotContainIOL()
 
-private fun String.threeIncreaseLetter() = ('a'..'z').windowed(3)
-    .any {
-        this.contains(it.joinToString(""))
-    }
-
-private fun String.noIOL() = !this.contains('i') && !this.contains('o') && !this.contains('l')
-
-private fun String.twoConsecutiveLetter(): Boolean {
-    val set = mutableSetOf<Char>()
-    this.windowed(2)
-        .forEach {
-            if (it[0] == it[1]) {
-                set.add(it[0])
-            }
+private fun String.hasThreeIncreasingLetters(): Boolean {
+    for (i in 0 until length - 2) {
+        if (this[i] + 1 == this[i + 1] && this[i] + 2 == this[i + 2]) {
+            return true
         }
-    return set.size >= 2
+    }
+    return false
+}
+
+private fun String.doesNotContainIOL(): Boolean = none { it in "iol" }
+
+private fun String.hasTwoNonOverlappingPairs(): Boolean {
+    val regex = Regex("""(.)\1""")
+    return regex.findAll(this).map { it.value[0] }.toSet().size >= 2
 }
