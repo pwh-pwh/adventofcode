@@ -21,26 +21,26 @@ class NeuralNetwork(
 ) {
 
     // 训练模型
-    fun train(inputs: List<DoubleArray>,outputs: List<Int>,epoch:Int) = repeat(epoch) {
+    fun train(inputs: List<DoubleArray>, outputs: List<Int>, epoch: Int) = repeat(epoch) {
         assert(inputs.size == outputs.size)
-        (0..inputs.size - 1).forEach { index ->
-            val input = inputs[index]
-            val output = outputs[index]
+        inputs.zip(outputs).forEach { (input, output) ->
             // 前向传播
-            val sum = weights[0] * input[0] + weights[1] * input[1] + bias
-            val prediction = sum.sigmoid()
+            val prediction = predict(input)
             // 计算损失
             val error = output - prediction
             // 反向传播更新权重和偏置
-            weights[0] += error * input[0] * learningRate * prediction.derivative()
-            weights[1] += error * input[1] * learningRate * prediction.derivative()
+            weights.indices.forEach { i ->
+                weights[i] += error * input[i] * learningRate * prediction.derivative()
+            }
             bias += error * learningRate * prediction.derivative()
         }
     }
 
     // 使用训练好的模型进行预测
-    fun predict(input: DoubleArray) = (input[0] * weights[0] + input[1] * weights[1] + bias).sigmoid()
+    fun predict(input: DoubleArray) =
+        (input.zip(weights).sumOf { (inputValue, weight) -> inputValue * weight } + bias).sigmoid()
 }
+
 // sigmoid激活函数
 inline fun Double.sigmoid() = 1.0 / (1.0 + exp(-this))
 
@@ -49,18 +49,18 @@ inline fun Double.derivative() = this * (1.0 - this)
 
 fun main() {
     // 训练数据
-    val inputs = (0..100).map { doubleArrayOf(Random.nextDouble(), Random.nextDouble()) }
+    val inputs = List(200) { doubleArrayOf(Random.nextDouble(), Random.nextDouble()) }
     val outputs = inputs.map {
-        if ((it[0] + it[1])>=1) 1 else 0
+        if ((it[0] + it[1]) >= 1) 1 else 0
     }
     val network = NeuralNetwork()
-    network.train(inputs,outputs,100)
-    val testInput = (0..50).map { doubleArrayOf(Random.nextDouble(), Random.nextDouble()) }
+    network.train(inputs, outputs, 200)
+    val testInput = List(50) { doubleArrayOf(Random.nextDouble(), Random.nextDouble()) }
     var count = 0
     var sucNum = 0
     testInput.forEach {
         val result = network.predict(it)
-        val expect = if ((it[0] + it[1])>=1) 1 else 0
+        val expect = if ((it[0] + it[1]) >= 1) 1 else 0
         // 是否正确
         val isCorrect = expect == if (result >= 0.5) 1 else 0
         count++
