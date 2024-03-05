@@ -8,41 +8,44 @@ import java.io.File
  * @Description:
  */
 fun main() {
-
     /**
-     * s 速度 r 运行时间 d 休息时间 total 总时间
+     * Calculates the distance traveled by a reindeer in a given time frame.
+     * @param speed the speed of the reindeer
+     * @param runTime the duration the reindeer can run
+     * @param restTime the duration the reindeer rests
+     * @param totalTime the total time for the calculation
+     * @return the distance traveled by the reindeer
      */
-    fun doCal(s:Int,r:Int,d:Int,total:Int):Int {
+    fun calculateDistance(speed: Int, runTime: Int, restTime: Int, totalTime: Int): Int {
         var count = 0
-        var sum = 0
-        var t = total
+        var distance = 0
+        var t = totalTime
         while (t > 0) {
-            t -= if (count % 2==0) {
-                if (t<=r) {
-                    sum+=(t*s)
+            t -= if (count % 2 == 0) {
+                if (t <= runTime) {
+                    distance += (t * speed)
                     break
                 }
-                sum+=(r*s)
-                r
+                distance += (runTime * speed)
+                runTime
             } else {
-                if (t<=d) {
+                if (t <= restTime) {
                     break
                 }
-                d
+                restTime
             }
             count++
         }
-        return sum
+        return distance
     }
 
     val max = File("src/y2015/day14/day14.txt").readLines()
-        .maxOf {
-            str ->
+        .maxOf { str ->
             val numberRegex = """\d+""".toRegex()
-            val (s,r,d) = numberRegex.findAll(str).map {
+            val (speed, runTime, restTime) = numberRegex.findAll(str).map {
                 it.value.toInt()
             }.toList()
-            doCal(s,r,d,2503)
+            calculateDistance(speed, runTime, restTime, 2503)
         }
     println("max is $max")
 }
