@@ -22,6 +22,7 @@ fun main() {
     println("max: $maxValue")
 }
 var maxValue = Int.MIN_VALUE
+var part2 = true
 data class Record(val capacity: Int, val durability: Int, val flavor: Int, val texture: Int, val calories: Int)
 
 private fun doCal(data: List<Record>,dis:MutableList<Int>,t:Int) {
@@ -47,6 +48,7 @@ fun calR(data: List<Record>,dis:List<Int>):Int {
     var durability = 0
     var flavor = 0
     var texture = 0
+    var calorie = 0
     data.zip(dis)
         .forEach {
             (record, dis) ->
@@ -54,7 +56,8 @@ fun calR(data: List<Record>,dis:List<Int>):Int {
             durability += record.durability * dis
             flavor += record.flavor * dis
             texture += record.texture * dis
+            calorie += record.calories * dis
         }
-    if (capacity<=0||durability<=0||flavor<=0||texture<=0) return 0
+    if (capacity<=0||durability<=0||flavor<=0||texture<=0||(part2&&calorie!=500)) return 0
     return capacity*durability*flavor*texture
 }
