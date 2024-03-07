@@ -8,8 +8,6 @@ import java.io.File
  * @Description:
  */
 fun main() {
-    //Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
-    //Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
     var data = File("src/y2015/day15/day15.txt")
         .readLines()
         .map {
@@ -32,10 +30,6 @@ private fun doCal(data: List<Record>,dis:MutableList<Int>,t:Int) {
         var calR = calR(data, dis)
         if (calR > maxValue) {
             maxValue = calR
-            if (calR==125000000) {
-                //打印 dis
-                println(dis)
-            }
         }
 
         dis.removeLast()
@@ -61,6 +55,6 @@ fun calR(data: List<Record>,dis:List<Int>):Int {
             flavor += record.flavor * dis
             texture += record.texture * dis
         }
-    if (capacity==0||durability==0||flavor==0||texture==0) return 0
+    if (capacity<=0||durability<=0||flavor<=0||texture<=0) return 0
     return capacity*durability*flavor*texture
 }
