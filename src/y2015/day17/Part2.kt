@@ -13,10 +13,12 @@ fun main() {
         .map {
             it.toInt()
         }.toList()
+    val rm = mutableMapOf<Int,Int>()
 
     fun countCombinations(list: List<Int>, r: Int): Int {
-        fun backtrack(start: Int, total: Int): Int {
+        fun backtrack(start: Int, total: Int,ct:Int): Int {
             if (total == r) {
+                rm[ct] = rm.getOrDefault(ct,0)+1
                 return 1
             }
             if (total > r) {
@@ -24,11 +26,11 @@ fun main() {
             }
             var count = 0
             for (i in start until list.size) {
-                count += backtrack(i + 1, total + list[i])
+                count += backtrack(i + 1, total + list[i],ct+1)
             }
             return count
         }
-        return backtrack(0, 0)
+        return backtrack(0, 0,0)
     }
     println(countCombinations(list, 150))
 }
