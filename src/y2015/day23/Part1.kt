@@ -22,9 +22,9 @@ data class Jie(val register: String, val offset: Int) : Instruction()
 data class Jio(val register: String, val offset: Int) : Instruction()
 
 object Rm {
-    var a = 1
-    var b = 0
-    fun setV(r:String,v:Int) {
+    var a = 1L
+    var b = 0L
+    fun setV(r:String,v:Long) {
         if (r == "a") {
             a  = v
         } else {
@@ -32,7 +32,7 @@ object Rm {
         }
     }
 
-    fun getV(r:String):Int {
+    fun getV(r:String):Long {
         return if (r == "a") {
             a
         } else {
@@ -76,7 +76,7 @@ fun doInsFun(itList:List<Instruction>) {
             }
 
             is Jie -> {
-                if (Rm.getV(instruction.register) % 2 == 0) {
+                if (Rm.getV(instruction.register) % 2 == 0L) {
                     position = position + instruction.offset
                 } else {
                     position += 1
@@ -84,7 +84,7 @@ fun doInsFun(itList:List<Instruction>) {
             }
 
             is Jio -> {
-                if (Rm.getV(instruction.register) == 1) {
+                if (Rm.getV(instruction.register) == 1L) {
                     position = position + instruction.offset
                 } else {
                     position+=1
@@ -121,7 +121,7 @@ fun doIns(position: Int, itList: List<Instruction>) {
 
         is Jie -> {
             Rm.getV(instruction.register)
-            if (Rm.getV(instruction.register) % 2 == 0) {
+            if (Rm.getV(instruction.register) % 2 == 0L) {
                 doIns( position + instruction.offset, itList)
             } else {
                 doIns( position + 1, itList)
@@ -129,7 +129,7 @@ fun doIns(position: Int, itList: List<Instruction>) {
         }
 
         is Jio -> {
-            if (Rm.getV(instruction.register) == 1) {
+            if (Rm.getV(instruction.register) == 1L) {
                 doIns( position + instruction.offset, itList)
             } else {
                 doIns(position + 1, itList)
